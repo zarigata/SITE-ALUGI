@@ -168,15 +168,46 @@ class AlugiAuth {
     }
 
     showMessage(messageDiv) {
-        const container = document.querySelector('.auth-wrapper');
-        const existingMessage = document.querySelector('.auth-message');
+        // Try to find the auth-wrapper first, if not found, use the main container or body
+        let container = document.querySelector('.auth-wrapper') || 
+                       document.querySelector('.profile-container') || 
+                       document.querySelector('.main-container');
         
+        if (!container) {
+            // If no container found, create one
+            container = document.createElement('div');
+            container.className = 'message-container';
+            document.body.insertBefore(container, document.body.firstChild);
+        }
+
+        const existingMessage = document.querySelector('.auth-message');
         if (existingMessage) {
             existingMessage.remove();
         }
 
         container.insertBefore(messageDiv, container.firstChild);
-        setTimeout(() => messageDiv.remove(), 5000);
+        
+        // Add floating message styles
+        messageDiv.style.position = 'fixed';
+        messageDiv.style.top = '20px';
+        messageDiv.style.right = '20px';
+        messageDiv.style.zIndex = '1000';
+        messageDiv.style.padding = '15px 25px';
+        messageDiv.style.borderRadius = '5px';
+        messageDiv.style.backgroundColor = messageDiv.classList.contains('success') ? '#4CAF50' : '#f44336';
+        messageDiv.style.color = 'white';
+        messageDiv.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+        messageDiv.style.transition = 'opacity 0.3s ease';
+
+        // Animate the message
+        messageDiv.style.opacity = '0';
+        setTimeout(() => messageDiv.style.opacity = '1', 10);
+        
+        // Remove the message after 5 seconds with fade out
+        setTimeout(() => {
+            messageDiv.style.opacity = '0';
+            setTimeout(() => messageDiv.remove(), 300);
+        }, 5000);
     }
 
     // Method to check if user is logged in
