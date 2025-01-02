@@ -268,51 +268,82 @@ class AlugiApp {
 
     // Perform item search
     performSearch(query) {
-        // First, check if we have an auth system
-        const auth = window.AlugiAuth;
-        if (!auth) {
-            console.error('Authentication system not initialized');
-            return;
+        // Validate query
+        if (!query || typeof query !== 'string') {
+            console.error('Invalid search query');
+            return [];
         }
 
-        // Perform search using the authentication system's search method
-        const results = auth.searchItems(query);
-        
-        // Display search results
-        this.displaySearchResults(results);
+        // Check if AlugiData exists
+        if (!window.AlugiData || typeof window.AlugiData.searchItems !== 'function') {
+            console.error('Search functionality is not available');
+            return [];
+        }
+
+        // Perform search using AlugiData's search method
+        try {
+            const results = window.AlugiData.searchItems(query);
+            return results || [];
+        } catch (error) {
+            console.error('Error performing search:', error);
+            return [];
+        }
     }
 
     // Display search results
     displaySearchResults(results) {
-        const searchResultsContainer = document.getElementById('search-results');
+        // Ensure results is an array
+        const searchResults = Array.isArray(results) ? results : [];
         
-        // Create container if it doesn't exist
+        // Find or create search results container
+        let searchResultsContainer = document.getElementById('search-results');
         if (!searchResultsContainer) {
-            const container = document.createElement('div');
-            container.id = 'search-results';
-            container.classList.add('search-results');
-            document.body.appendChild(container);
+            searchResultsContainer = document.createElement('div');
+            searchResultsContainer.id = 'search-results';
+            searchResultsContainer.classList.add('search-results');
+            
+            // Try to append to a suitable parent
+            const parentContainer = document.querySelector('.main-content') || 
+                                    document.querySelector('main') || 
+                                    document.body;
+            parentContainer.appendChild(searchResultsContainer);
         }
 
-        // Clear previous results
-        searchResultsContainer.innerHTML = '';
+        // Clear previous results safely
+        if (searchResultsContainer) {
+            searchResultsContainer.innerHTML = '';
+        }
 
-        if (results.length === 0) {
-            searchResultsContainer.innerHTML = '<p>Nenhum item encontrado</p>';
+        // Handle empty results
+        if (searchResults.length === 0) {
+            const noResultsMessage = document.createElement('p');
+            noResultsMessage.textContent = 'Nenhum item encontrado';
+            noResultsMessage.classList.add('no-results-message');
+            
+            if (searchResultsContainer) {
+                searchResultsContainer.appendChild(noResultsMessage);
+            }
             return;
         }
 
         // Create result items
-        results.forEach(item => {
+        searchResults.forEach(item => {
+            if (!item) return; // Skip null or undefined items
+
             const resultItem = document.createElement('div');
             resultItem.classList.add('search-result-item');
+            
+            // Safely access item properties with fallbacks
             resultItem.innerHTML = `
-                <h3>${item.name}</h3>
-                <p>${item.description}</p>
-                <span>Categoria: ${item.category}</span>
-                <span>Postado por: ${item.userName}</span>
+                <h3>${item.name || 'Item sem nome'}</h3>
+                <p>${item.description || 'Sem descrição'}</p>
+                <span>Categoria: ${item.category || 'Não especificada'}</span>
+                <span>Postado por: ${item.userName || 'Usuário desconhecido'}</span>
             `;
-            searchResultsContainer.appendChild(resultItem);
+
+            if (searchResultsContainer) {
+                searchResultsContainer.appendChild(resultItem);
+            }
         });
     }
 
@@ -322,14 +353,22 @@ class AlugiApp {
         const mainSearchButton = document.getElementById('main-search-button');
 
         const performSearch = () => {
+            // Safely get search input value
             const query = mainSearchInput ? mainSearchInput.value.trim() : '';
+            
             if (query) {
-                // Use the search method from AlugiData
+                // Validate search method exists
+                if (!window.AlugiData || typeof window.AlugiData.searchItems !== 'function') {
+                    console.error('Search functionality is not available');
+                    return;
+                }
+
+                // Perform search
                 const results = window.AlugiData.searchItems(query);
                 
-                // Store the search query for the results page
+                // Store search data
                 localStorage.setItem('alugi_last_search_query', query);
-                localStorage.setItem('alugi_search_results', JSON.stringify(results));
+                localStorage.setItem('alugi_search_results', JSON.stringify(results || []));
                 
                 // Redirect to search results page
                 window.location.href = 'search-results.html';
