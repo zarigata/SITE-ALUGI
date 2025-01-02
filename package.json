@@ -1,0 +1,21 @@
+{
+    "name": "alugi-rental-platform",
+    "version": "1.0.0",
+    "description": "Alugi - Rent Anything Platform",
+    "main": "index.html",
+    "scripts": {
+        "start": "npx http-server .",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "rental",
+        "sharing",
+        "marketplace",
+        "brazil"
+    ],
+    "author": "Alugi Team",
+    "license": "ISC",
+    "devDependencies": {
+        "http-server": "^14.1.1"
+    }
+}
