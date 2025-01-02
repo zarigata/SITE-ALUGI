@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contato - Alugi</title>
+    <title>Alugi - Contato</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -36,64 +36,115 @@
         </header>
 
         <main class="contact-page">
-            <section class="contact-hero">
+            <div class="contact-hero">
                 <h1>Entre em Contato</h1>
-                <p>Estamos aqui para ajudar! Envie sua mensagem e responderemos o mais breve possível.</p>
+                <p>Estamos aqui para ajudar! Escolha a melhor forma de falar conosco.</p>
+            </div>
+
+            <section class="contact-options">
+                <div class="contact-grid">
+                    <div class="contact-card">
+                        <div class="card-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3>Chat Online</h3>
+                        <p>Disponível 24/7 para suas dúvidas</p>
+                        <button class="contact-button" onclick="window.Tawk_API && window.Tawk_API.toggle()">
+                            Iniciar Chat
+                        </button>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="card-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3>Email</h3>
+                        <p>Resposta em até 24 horas</p>
+                        <a href="mailto:contato@alugi.com.br" class="contact-button">
+                            contato@alugi.com.br
+                        </a>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="card-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <h3>Telefone</h3>
+                        <p>Seg-Sex, 9h às 18h</p>
+                        <a href="tel:+551199999999" class="contact-button">
+                            +55 (11) 9999-9999
+                        </a>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="card-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <h3>WhatsApp</h3>
+                        <p>Resposta instantânea</p>
+                        <a href="https://wa.me/551199999999" target="_blank" class="contact-button">
+                            Enviar Mensagem
+                        </a>
+                    </div>
+                </div>
             </section>
 
-            <section class="contact-section">
-                <div class="contact-content">
-                    <div class="contact-info">
-                        <div class="contact-item">
-                            <i class="fas fa-envelope"></i>
-                            <h3>Email</h3>
-                            <p>contato@alugi.com.br</p>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-phone"></i>
-                            <h3>Telefone</h3>
-                            <p>+55 (11) 9999-9999</p>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <h3>Endereço</h3>
-                            <p>São Paulo, SP - Brasil</p>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-clock"></i>
-                            <h3>Horário de Atendimento</h3>
-                            <p>Segunda a Sexta: 9h às 18h</p>
-                        </div>
-                    </div>
-
-                    <div class="contact-form-container">
-                        <h2>Envie sua Mensagem</h2>
-                        <form id="contact-form" class="contact-form">
-                            <div class="form-group">
-                                <label for="name">Nome</label>
+            <section class="contact-form-section">
+                <div class="form-container">
+                    <h2>Envie sua Mensagem</h2>
+                    <form id="contact-form" class="enhanced-form">
+                        <div class="form-group">
+                            <label for="name">Nome Completo</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-user"></i>
                                 <input type="text" id="name" name="name" required>
                             </div>
-                            <div class="form-group">
-                                <label for="email">Email</label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-envelope"></i>
                                 <input type="email" id="email" name="email" required>
                             </div>
-                            <div class="form-group">
-                                <label for="subject">Assunto</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject">Assunto</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-tag"></i>
                                 <select id="subject" name="subject" required>
                                     <option value="">Selecione um assunto</option>
-                                    <option value="suporte">Suporte</option>
-                                    <option value="parceria">Parceria</option>
-                                    <option value="sugestao">Sugestão</option>
-                                    <option value="outro">Outro</option>
+                                    <option value="support">Suporte Técnico</option>
+                                    <option value="partnership">Parcerias</option>
+                                    <option value="suggestion">Sugestões</option>
+                                    <option value="complaint">Reclamações</option>
+                                    <option value="other">Outros</option>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label for="message">Mensagem</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Mensagem</label>
+                            <div class="input-with-icon textarea-container">
+                                <i class="fas fa-comment"></i>
                                 <textarea id="message" name="message" required></textarea>
                             </div>
-                            <button type="submit" class="submit-button">Enviar Mensagem</button>
-                        </form>
-                    </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-container">
+                                <input type="checkbox" required>
+                                <span class="checkmark"></span>
+                                Concordo em receber respostas por email
+                            </label>
+                        </div>
+
+                        <button type="submit" class="submit-button">
+                            <i class="fas fa-paper-plane"></i>
+                            Enviar Mensagem
+                        </button>
+                    </form>
                 </div>
             </section>
 
@@ -101,20 +152,49 @@
                 <h2>Perguntas Frequentes</h2>
                 <div class="faq-grid">
                     <div class="faq-item">
-                        <h3>Como funciona o Alugi?</h3>
-                        <p>O Alugi é uma plataforma que conecta pessoas que querem alugar itens com pessoas que têm itens para alugar.</p>
+                        <h3>Como funciona o aluguel?</h3>
+                        <p>O processo é simples: encontre o item desejado, entre em contato com o proprietário, combine os detalhes e efetue o pagamento com segurança pela nossa plataforma.</p>
                     </div>
                     <div class="faq-item">
-                        <h3>Como posso anunciar meus itens?</h3>
-                        <p>Basta criar uma conta, clicar em "Anunciar" e preencher as informações do seu item.</p>
+                        <h3>É seguro alugar?</h3>
+                        <p>Sim! Todos os usuários são verificados e as transações são protegidas. Além disso, oferecemos seguro para todos os aluguéis.</p>
                     </div>
                     <div class="faq-item">
-                        <h3>Como funciona o pagamento?</h3>
-                        <p>Aceitamos diversas formas de pagamento, incluindo cartão de crédito, PIX e transferência bancária.</p>
+                        <h3>Como recebo o pagamento?</h3>
+                        <p>Os pagamentos são processados automaticamente e transferidos para sua conta bancária em até 24 horas após a confirmação do aluguel.</p>
                     </div>
                     <div class="faq-item">
-                        <h3>É seguro alugar no Alugi?</h3>
-                        <p>Sim! Temos um sistema de avaliação de usuários e garantias para locadores e locatários.</p>
+                        <h3>Posso cancelar um aluguel?</h3>
+                        <p>Sim, você pode cancelar até 24 horas antes do início do aluguel. Consulte nossa política de cancelamento para mais detalhes.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="office-section">
+                <div class="office-content">
+                    <div class="office-info">
+                        <h2>Nosso Escritório</h2>
+                        <p>Venha nos visitar em nosso escritório central:</p>
+                        <address>
+                            <i class="fas fa-map-marker-alt"></i> Av. Paulista, 1000<br>
+                            Bela Vista, São Paulo - SP<br>
+                            CEP: 01310-100
+                        </address>
+                        <div class="office-hours">
+                            <h3><i class="fas fa-clock"></i> Horário de Funcionamento</h3>
+                            <p>Segunda a Sexta: 9h às 18h<br>
+                            Sábado: 9h às 13h</p>
+                        </div>
+                    </div>
+                    <div class="office-map">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.0998810726025!2d-46.65429168502168!3d-23.564616184681276!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59c8da0aa315%3A0xd59f9431f2c9776a!2sAv.%20Paulista%2C%201000!5e0!3m2!1sen!2sbr!4v1620000000000!5m2!1sen!2sbr" 
+                            width="100%" 
+                            height="450" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy">
+                        </iframe>
                     </div>
                 </div>
             </section>
@@ -135,12 +215,25 @@
                 </div>
             </div>
             <div class="copyright">
-                © 2025 Alugi. Todos os direitos reservados.
+                2025 Alugi. Todos os direitos reservados.
             </div>
         </footer>
     </div>
 
-    <script src="contact.js"></script>
     <script src="app.js"></script>
+    <script src="contact.js"></script>
+    
+    <!-- Live Chat Integration -->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+        s1.async=true;
+        s1.src='https://embed.tawk.to/YOUR_TAWK_TO_ID/default';
+        s1.charset='UTF-8';
+        s1.setAttribute('crossorigin','*');
+        s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
 </body>
 </html>
