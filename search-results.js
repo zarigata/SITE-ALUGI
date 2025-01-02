@@ -10,23 +10,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchButton = document.getElementById('search-button');
 
     // Retrieve search results from localStorage
-    const searchResults = JSON.parse(localStorage.getItem('alugi_search_results')) || [];
+    const searchResults = JSON.parse(localStorage.getItem('alugi_search_results') || '[]');
     const searchQuery = localStorage.getItem('alugi_last_search_query') || '';
 
     // Display search query
-    searchQueryText.textContent = `Resultados para: "${searchQuery}"`;
+    if (searchQueryText) {
+        searchQueryText.textContent = `Resultados para: "${searchQuery}"`;
+    }
 
     // Render search results
     function renderSearchResults(results) {
+        if (!searchResultsGrid) return;
+
         searchResultsGrid.innerHTML = '';
 
         if (results.length === 0) {
-            noResultsSection.style.display = 'block';
+            if (noResultsSection) noResultsSection.style.display = 'block';
             searchResultsGrid.style.display = 'none';
             return;
         }
 
-        noResultsSection.style.display = 'none';
+        if (noResultsSection) noResultsSection.style.display = 'none';
         searchResultsGrid.style.display = 'grid';
 
         results.forEach(item => {
@@ -78,10 +82,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // New search functionality
     function performSearch() {
-        const query = searchInput.value.trim();
+        const query = searchInput ? searchInput.value.trim() : '';
         if (query) {
             const results = window.AlugiData.searchItems(query);
             localStorage.setItem('alugi_last_search_query', query);
+            localStorage.setItem('alugi_search_results', JSON.stringify(results));
             window.location.href = 'search-results.html';
         }
     }

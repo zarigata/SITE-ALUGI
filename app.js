@@ -321,19 +321,20 @@ class AlugiApp {
         const mainSearchInput = document.getElementById('main-search-input');
         const mainSearchButton = document.getElementById('main-search-button');
 
-        function performSearch() {
-            const query = mainSearchInput.value.trim();
+        const performSearch = () => {
+            const query = mainSearchInput ? mainSearchInput.value.trim() : '';
             if (query) {
                 // Use the search method from AlugiData
                 const results = window.AlugiData.searchItems(query);
                 
                 // Store the search query for the results page
                 localStorage.setItem('alugi_last_search_query', query);
+                localStorage.setItem('alugi_search_results', JSON.stringify(results));
                 
                 // Redirect to search results page
                 window.location.href = 'search-results.html';
             }
-        }
+        };
 
         // Add event listeners for search
         if (mainSearchButton) {
