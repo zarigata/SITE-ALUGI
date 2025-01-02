@@ -190,6 +190,56 @@ class AlugiAuth {
         localStorage.removeItem('alugi_current_user');
         window.location.href = 'index.html';
     }
+
+    // Method to post a new item
+    postItem(itemData) {
+        if (!this.currentUser) {
+            this.showError('Você precisa estar logado para postar um item');
+            return false;
+        }
+
+        const newItem = {
+            id: Date.now().toString(),
+            ...itemData,
+            userId: this.currentUser.id,
+            userName: this.currentUser.name,
+            createdAt: new Date().toISOString(),
+            status: 'available'
+        };
+
+        // Add item to items array
+        this.items.push(newItem);
+        localStorage.setItem('alugi_items', JSON.stringify(this.items));
+
+        // Add item to user's items
+        const userIndex = this.users.findIndex(u => u.id === this.currentUser.id);
+        if (userIndex !== -1) {
+            if (!this.users[userIndex].items) {
+                this.users[userIndex].items = [];
+            }
+            this.users[userIndex].items.push(newItem.id);
+            localStorage.setItem('alugi_users', JSON.stringify(this.users));
+        }
+
+        this.showSuccess('Item postado com sucesso!');
+        return true;
+    }
+
+    // Method to get user's items
+    getUserItems() {
+        if (!this.currentUser) return [];
+        return this.items.filter(item => item.userId === this.currentUser.id);
+    }
+
+    // Method to search items
+    searchItems(query) {
+        query = query.toLowerCase();
+        return this.items.filter(item => 
+            item.name.toLowerCase().includes(query) ||
+            item.description.toLowerCase().includes(query) ||
+            item.category.toLowerCase().includes(query)
+        );
+    }
 }
 
 // Initialize authentication when the page loads
