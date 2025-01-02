@@ -30,6 +30,7 @@ class AlugiApp {
         this.data = ALUGI_DATA;
         this.initEventListeners();
         this.initDynamicContent();
+        this.updateAuthUI();
     }
 
     // Initialize all event listeners
@@ -124,14 +125,13 @@ class AlugiApp {
             };
         };
 
-        const performSearch = debounce((query) => {
-            console.log(`Searching for: ${query}`);
-            // TODO: Implement actual search functionality
+        const debouncedSearch = debounce((query) => {
+            this.performSearch(query);
         }, 300);
 
         if (searchInput && searchButton) {
-            searchInput.addEventListener('input', (e) => performSearch(e.target.value));
-            searchButton.addEventListener('click', () => performSearch(searchInput.value));
+            searchInput.addEventListener('input', (e) => debouncedSearch(e.target.value));
+            searchButton.addEventListener('click', () => debouncedSearch(searchInput.value));
         }
     }
 
@@ -174,6 +174,95 @@ class AlugiApp {
     showSignupModal() {
         console.log('Signup modal triggered');
         // TODO: Implement signup modal
+    }
+
+    // Update authentication UI based on login status
+    updateAuthUI() {
+        const loginButton = document.querySelector('.login');
+        const signupButton = document.querySelector('.signup');
+        const currentUser = JSON.parse(localStorage.getItem('alugi_current_user'));
+
+        if (loginButton && signupButton) {
+            if (currentUser) {
+                // User is logged in
+                loginButton.textContent = currentUser.name;
+                signupButton.textContent = 'Sair';
+                
+                loginButton.addEventListener('click', () => {
+                    // Redirect to user profile or dashboard
+                    window.location.href = 'profile.html';
+                });
+                
+                signupButton.addEventListener('click', () => {
+                    // Logout
+                    localStorage.removeItem('alugi_current_user');
+                    this.updateAuthUI();
+                    window.location.reload();
+                });
+            } else {
+                // User is not logged in
+                loginButton.textContent = 'Entrar';
+                signupButton.textContent = 'Cadastrar';
+                
+                loginButton.addEventListener('click', () => {
+                    window.location.href = 'auth.html';
+                });
+                
+                signupButton.addEventListener('click', () => {
+                    window.location.href = 'auth.html';
+                });
+            }
+        }
+    }
+
+    // Perform item search
+    performSearch(query) {
+        // First, check if we have an auth system
+        const auth = window.AlugiAuth;
+        if (!auth) {
+            console.error('Authentication system not initialized');
+            return;
+        }
+
+        // Perform search using the authentication system's search method
+        const results = auth.searchItems(query);
+        
+        // Display search results
+        this.displaySearchResults(results);
+    }
+
+    // Display search results
+    displaySearchResults(results) {
+        const searchResultsContainer = document.getElementById('search-results');
+        
+        // Create container if it doesn't exist
+        if (!searchResultsContainer) {
+            const container = document.createElement('div');
+            container.id = 'search-results';
+            container.classList.add('search-results');
+            document.body.appendChild(container);
+        }
+
+        // Clear previous results
+        searchResultsContainer.innerHTML = '';
+
+        if (results.length === 0) {
+            searchResultsContainer.innerHTML = '<p>Nenhum item encontrado</p>';
+            return;
+        }
+
+        // Create result items
+        results.forEach(item => {
+            const resultItem = document.createElement('div');
+            resultItem.classList.add('search-result-item');
+            resultItem.innerHTML = `
+                <h3>${item.name}</h3>
+                <p>${item.description}</p>
+                <span>Categoria: ${item.category}</span>
+                <span>Postado por: ${item.userName}</span>
+            `;
+            searchResultsContainer.appendChild(resultItem);
+        });
     }
 
     // Static utility methods

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil - Alugi</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 
+    F3V3R DR34M KEYGEN STYLE COMMENT: 
+    ULTIMATE USER PROFILE DOMINATION
+    CODED WITH THE POWER OF 1337 H4X0R SKILLS
+    -->
+    <div id="app">
+        <header>
+            <nav>
+                <div class="logo">Alugi</div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="#my-items">Meus Itens</a></li>
+                    <li><a href="#post-item">Postar Item</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <button class="login">Perfil</button>
+                    <button class="signup">Sair</button>
+                </div>
+            </nav>
+        </header>
+
+        <main class="profile-page">
+            <section class="user-info">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="profile-details" id="user-details">
+                        <!-- User details will be dynamically populated -->
+                    </div>
+                </div>
+            </section>
+
+            <section id="post-item" class="post-item-section">
+                <h2>Postar Novo Item</h2>
+                <form id="post-item-form">
+                    <div class="input-group">
+                        <label for="item-name">Nome do Item</label>
+                        <input type="text" id="item-name" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="item-description">Descrição</label>
+                        <textarea id="item-description" required></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label for="item-category">Categoria</label>
+                        <select id="item-category" required>
+                            <option value="">Selecione uma categoria</option>
+                            <option value="Ferramentas">Ferramentas</option>
+                            <option value="Equipamentos de Festa">Equipamentos de Festa</option>
+                            <option value="Eletrônicos">Eletrônicos</option>
+                            <option value="Esportes">Esportes</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="daily-rate">Valor da Diária (R$)</label>
+                        <input type="number" id="daily-rate" step="0.01" required>
+                    </div>
+                    <button type="submit" class="auth-button">Postar Item</button>
+                </form>
+            </section>
+
+            <section id="my-items" class="my-items-section">
+                <h2>Meus Itens</h2>
+                <div id="items-grid" class="items-grid">
+                    <!-- User's items will be dynamically populated -->
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <div class="footer-logo">Alugi</div>
+                <div class="footer-links">
+                    <a href="terms.html">Termos de Uso</a>
+                    <a href="privacy.html">Política de Privacidade</a>
+                    <a href="help.html">Ajuda</a>
+                </div>
+                <div class="social-links">
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2025 Alugi. Todos os direitos reservados.
+            </div>
+        </footer>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="profile.js"></script>
+</body>
+</html>
