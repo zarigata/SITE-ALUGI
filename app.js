@@ -160,16 +160,33 @@ class AlugiApp {
         const loginBtn = document.querySelector('.login');
         const signupBtn = document.querySelector('.signup');
         
-        if (loginBtn) {
-            loginBtn.addEventListener('click', () => {
-                window.location.href = 'auth.html?mode=login';
-            });
-        }
-        
-        if (signupBtn) {
-            signupBtn.addEventListener('click', () => {
-                window.location.href = 'auth.html?mode=signup';
-            });
+        if (loginBtn && signupBtn) {
+            // Check if user is logged in
+            const currentUser = JSON.parse(localStorage.getItem('alugi_current_user'));
+            
+            if (currentUser) {
+                // User is logged in, show profile and logout buttons
+                loginBtn.textContent = 'Perfil';
+                signupBtn.textContent = 'Sair';
+                
+                loginBtn.addEventListener('click', () => {
+                    window.location.href = 'profile.html';
+                });
+                
+                signupBtn.addEventListener('click', () => {
+                    localStorage.removeItem('alugi_current_user');
+                    window.location.reload();
+                });
+            } else {
+                // User is not logged in, show login and signup buttons
+                loginBtn.addEventListener('click', () => {
+                    window.location.href = 'auth.html?mode=login';
+                });
+                
+                signupBtn.addEventListener('click', () => {
+                    window.location.href = 'auth.html?mode=signup';
+                });
+            }
         }
     }
 

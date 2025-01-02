@@ -11,6 +11,7 @@ class AlugiAuth {
         this.items = JSON.parse(localStorage.getItem('alugi_items')) || [];
         
         this.initEventListeners();
+        this.checkAuthMode();
     }
 
     initEventListeners() {
@@ -51,23 +52,48 @@ class AlugiAuth {
                 this.loginUser();
             });
         }
+
+        // Back to home button
+        const backButton = document.querySelector('.back-to-home');
+        if (backButton) {
+            backButton.addEventListener('click', () => {
+                window.location.href = 'index.html';
+            });
+        }
+    }
+
+    checkAuthMode() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const mode = urlParams.get('mode');
+        
+        const loginContainer = document.querySelector('.login-container');
+        const registerContainer = document.querySelector('.register-container');
+        
+        if (mode === 'signup' && loginContainer && registerContainer) {
+            loginContainer.style.display = 'none';
+            registerContainer.style.display = 'block';
+        }
     }
 
     registerUser() {
-        const name = document.getElementById('register-name').value;
-        const email = document.getElementById('register-email').value;
-        const password = document.getElementById('register-password').value;
-        const confirmPassword = document.getElementById('register-confirm-password').value;
+        const nameInput = document.getElementById('register-name');
+        const emailInput = document.getElementById('register-email');
+        const passwordInput = document.getElementById('register-password');
+        const confirmPasswordInput = document.getElementById('register-confirm-password');
 
-        // Basic validation
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+
+        // Validation
         if (password !== confirmPassword) {
-            alert('As senhas não coincidem');
+            this.showError('As senhas não coincidem');
             return;
         }
 
-        // Check if user already exists
         if (this.users.some(user => user.email === email)) {
-            alert('Este email já está cadastrado');
+            this.showError('Este email já está cadastrado');
             return;
         }
 
@@ -76,91 +102,89 @@ class AlugiAuth {
             id: Date.now().toString(),
             name,
             email,
-            password: this.hashPassword(password),
-            items: []
+            password: this.hashPassword(password), // In a real app, use proper encryption
+            items: [],
+            createdAt: new Date().toISOString()
         };
 
+        // Add user to users array
         this.users.push(newUser);
         localStorage.setItem('alugi_users', JSON.stringify(this.users));
-        
-        alert('Cadastro realizado com sucesso!');
-        
-        // Automatically log in the user
-        this.currentUser = newUser;
-        localStorage.setItem('alugi_current_user', JSON.stringify(newUser));
-        
-        // Redirect to home page or dashboard
-        window.location.href = 'index.html';
+
+        // Auto login after registration
+        this.currentUser = { ...newUser, password: undefined };
+        localStorage.setItem('alugi_current_user', JSON.stringify(this.currentUser));
+
+        // Show success message and redirect
+        this.showSuccess('Cadastro realizado com sucesso!');
+        setTimeout(() => {
+            window.location.href = 'profile.html';
+        }, 1500);
     }
 
     loginUser() {
-        const email = document.getElementById('login-email').value;
-        const password = document.getElementById('login-password').value;
+        const emailInput = document.getElementById('login-email');
+        const passwordInput = document.getElementById('login-password');
 
-        const user = this.users.find(u => u.email === email && this.verifyPassword(password, u.password));
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
 
-        if (user) {
-            this.currentUser = user;
-            localStorage.setItem('alugi_current_user', JSON.stringify(user));
-            alert('Login realizado com sucesso!');
-            window.location.href = 'index.html';
-        } else {
-            alert('Email ou senha incorretos');
+        // Find user
+        const user = this.users.find(u => u.email === email);
+
+        if (!user || user.password !== this.hashPassword(password)) {
+            this.showError('Email ou senha incorretos');
+            return;
         }
+
+        // Set current user
+        this.currentUser = { ...user, password: undefined };
+        localStorage.setItem('alugi_current_user', JSON.stringify(this.currentUser));
+
+        // Show success message and redirect
+        this.showSuccess('Login realizado com sucesso!');
+        setTimeout(() => {
+            window.location.href = 'profile.html';
+        }, 1500);
     }
 
-    // Simple password hashing (not cryptographically secure, for demonstration)
     hashPassword(password) {
-        let hash = 0;
-        for (let i = 0; i < password.length; i++) {
-            const char = password.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash; // Convert to 32-bit integer
-        }
-        return hash.toString();
+        // Simple hash function (DO NOT use in production)
+        return btoa(password);
     }
 
-    verifyPassword(inputPassword, storedHash) {
-        return this.hashPassword(inputPassword) === storedHash;
+    showError(message) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'auth-message error';
+        errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+        this.showMessage(errorDiv);
     }
 
-    // Method to post a new item
-    postItem(itemData) {
-        if (!this.currentUser) {
-            alert('Você precisa estar logado para postar um item');
-            return false;
-        }
+    showSuccess(message) {
+        const successDiv = document.createElement('div');
+        successDiv.className = 'auth-message success';
+        successDiv.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+        this.showMessage(successDiv);
+    }
 
-        const newItem = {
-            id: Date.now().toString(),
-            ...itemData,
-            userId: this.currentUser.id,
-            userName: this.currentUser.name
-        };
-
-        this.items.push(newItem);
-        localStorage.setItem('alugi_items', JSON.stringify(this.items));
-
-        // Add item to user's items
-        const userIndex = this.users.findIndex(u => u.id === this.currentUser.id);
-        if (userIndex !== -1) {
-            this.users[userIndex].items.push(newItem.id);
-            localStorage.setItem('alugi_users', JSON.stringify(this.users));
+    showMessage(messageDiv) {
+        const container = document.querySelector('.auth-wrapper');
+        const existingMessage = document.querySelector('.auth-message');
+        
+        if (existingMessage) {
+            existingMessage.remove();
         }
 
-        return true;
+        container.insertBefore(messageDiv, container.firstChild);
+        setTimeout(() => messageDiv.remove(), 5000);
     }
 
-    // Method to search items
-    searchItems(query) {
-        return this.items.filter(item => 
-            item.name.toLowerCase().includes(query.toLowerCase()) ||
-            item.description.toLowerCase().includes(query.toLowerCase()) ||
-            item.category.toLowerCase().includes(query.toLowerCase())
-        );
+    // Method to check if user is logged in
+    isLoggedIn() {
+        return this.currentUser !== null;
     }
 
-    // Logout method
+    // Method to log out user
     logout() {
         this.currentUser = null;
         localStorage.removeItem('alugi_current_user');
