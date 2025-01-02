@@ -1,9 +1,7 @@
 /* 
-F3V3R DR34M KEYGEN STYLE COMMENT: 
-ULTIMATE PROFILE DOMINATION SCRIPT
+F3V3R DR34M PROFILE DOMINATION SCRIPT
 CODED WITH THE POWER OF 1337 H4X0R SKILLS
 */
-
 class AlugiProfile {
     constructor() {
         this.auth = window.AlugiAuth;
@@ -17,27 +15,36 @@ class AlugiProfile {
         this.initProfile();
         this.initEventListeners();
         this.loadUserItems();
+        this.calculateProfileCompletion();
+        this.setupSectionNavigation();
     }
 
     initProfile() {
         // Set user information
-        document.getElementById('user-name').textContent = this.currentUser.name;
-        document.getElementById('join-date').textContent = new Date(this.currentUser.createdAt).toLocaleDateString('pt-BR', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
+        const userNameEl = document.getElementById('user-name');
+        const joinDateEl = document.getElementById('join-date');
+        const avatarImgEl = document.getElementById('avatar-img');
+        const profileCoverEl = document.getElementById('profile-cover');
 
-        // Load profile image if exists
-        const avatarImg = document.getElementById('avatar-img');
-        if (this.currentUser.avatar) {
-            avatarImg.src = this.currentUser.avatar;
+        if (userNameEl) userNameEl.textContent = this.currentUser.name || 'Usuário';
+        
+        if (joinDateEl) {
+            const joinDate = new Date(this.currentUser.createdAt || Date.now());
+            joinDateEl.textContent = `Membro desde ${joinDate.toLocaleDateString('pt-BR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            })}`;
         }
 
-        // Load cover image if exists
-        const profileCover = document.getElementById('profile-cover');
-        if (this.currentUser.coverImage) {
-            profileCover.style.backgroundImage = `url(${this.currentUser.coverImage})`;
+        // Load profile image
+        if (avatarImgEl && this.currentUser.avatar) {
+            avatarImgEl.src = this.currentUser.avatar;
+        }
+
+        // Load cover image
+        if (profileCoverEl && this.currentUser.coverImage) {
+            profileCoverEl.style.backgroundImage = `url(${this.currentUser.coverImage})`;
         }
 
         // Update stats
@@ -46,98 +53,150 @@ class AlugiProfile {
 
     updateStats() {
         const userItems = this.auth.getUserItems();
-        document.getElementById('items-count').textContent = userItems.length;
+        
+        // Update items count
+        const itemsCountEl = document.getElementById('items-count');
+        if (itemsCountEl) itemsCountEl.textContent = userItems.length;
+
+        // Update items badge
+        const itemsBadgeEl = document.getElementById('items-badge');
+        if (itemsBadgeEl) itemsBadgeEl.textContent = userItems.length;
 
         // Get rentals count (placeholder for now)
+        const rentalsCountEl = document.getElementById('rentals-count');
         const rentalsCount = localStorage.getItem(`alugi_rentals_${this.currentUser.id}`) || '0';
-        document.getElementById('rentals-count').textContent = rentalsCount;
+        if (rentalsCountEl) rentalsCountEl.textContent = rentalsCount;
+
+        // Update rentals badge
+        const rentalsBadgeEl = document.getElementById('rentals-badge');
+        if (rentalsBadgeEl) rentalsBadgeEl.textContent = rentalsCount;
 
         // Get user rating (placeholder for now)
+        const ratingEl = document.getElementById('rating');
         const rating = localStorage.getItem(`alugi_rating_${this.currentUser.id}`) || '5.0';
-        document.getElementById('rating').textContent = rating;
+        if (ratingEl) ratingEl.textContent = rating;
+
+        // Update dashboard stats
+        const totalEarningsEl = document.getElementById('total-earnings');
+        if (totalEarningsEl) totalEarningsEl.textContent = 'R$ 0,00';
+
+        const activeRentalsEl = document.getElementById('active-rentals');
+        if (activeRentalsEl) activeRentalsEl.textContent = '0';
+    }
+
+    calculateProfileCompletion() {
+        const completionProgress = document.getElementById('profile-completion-progress');
+        const completionTasks = document.getElementById('profile-completion-tasks');
+
+        if (!completionProgress || !completionTasks) return;
+
+        let completionScore = 0;
+        const tasks = completionTasks.querySelectorAll('li');
+
+        // Check profile picture
+        if (this.currentUser.avatar) {
+            tasks[0].classList.add('done');
+            completionScore += 33;
+        }
+
+        // Check personal information
+        if (this.currentUser.phone && this.currentUser.bio) {
+            tasks[1].classList.add('done');
+            completionScore += 33;
+        }
+
+        // Check first item posted
+        const userItems = this.auth.getUserItems();
+        if (userItems.length > 0) {
+            tasks[2].classList.add('done');
+            completionScore += 34;
+        }
+
+        // Update progress bar
+        completionProgress.style.width = `${completionScore}%`;
+        
+        // Add percentage text
+        const percentageText = document.createElement('span');
+        percentageText.textContent = `${Math.round(completionScore)}%`;
+        percentageText.classList.add('percentage-text');
+        completionProgress.innerHTML = '';
+        completionProgress.appendChild(percentageText);
     }
 
     initEventListeners() {
         // Profile image upload
-        document.getElementById('avatar-upload').addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const avatarImg = document.getElementById('avatar-img');
-                    avatarImg.src = e.target.result;
-                    
-                    // Save to localStorage
-                    this.currentUser.avatar = e.target.result;
-                    localStorage.setItem('alugi_current_user', JSON.stringify(this.currentUser));
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        // Cover image upload
-        document.getElementById('cover-upload').addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const profileCover = document.getElementById('profile-cover');
-                    profileCover.style.backgroundImage = `url(${e.target.result})`;
-                    
-                    // Save to localStorage
-                    this.currentUser.coverImage = e.target.result;
-                    localStorage.setItem('alugi_current_user', JSON.stringify(this.currentUser));
-                };
-                reader.readAsDataURL(file);
-            }
-        });
+        const avatarUpload = document.getElementById('avatar-upload');
+        if (avatarUpload) {
+            avatarUpload.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const avatarImg = document.getElementById('avatar-img');
+                        avatarImg.src = e.target.result;
+                        
+                        // Save to localStorage
+                        this.currentUser.avatar = e.target.result;
+                        localStorage.setItem('alugi_current_user', JSON.stringify(this.currentUser));
+                        
+                        // Recalculate profile completion
+                        this.calculateProfileCompletion();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
 
         // Post item form
-        document.getElementById('post-item-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            this.postNewItem();
-        });
+        const postItemForm = document.getElementById('post-item-form');
+        if (postItemForm) {
+            postItemForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.postNewItem();
+            });
+        }
+    }
 
-        // Item images upload
-        document.getElementById('item-images').addEventListener('change', (e) => {
-            const files = e.target.files;
-            const preview = document.getElementById('image-preview');
-            preview.innerHTML = '';
+    setupSectionNavigation() {
+        const navLinks = document.querySelectorAll('.profile-nav a');
+        const sections = {
+            'dashboard': document.getElementById('dashboard-section'),
+            'items': document.getElementById('items-section')
+        };
 
-            for (let i = 0; i < Math.min(files.length, 5); i++) {
-                const file = files[i];
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    preview.appendChild(img);
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        // Edit profile form
-        document.getElementById('edit-profile-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            this.saveProfileChanges();
-        });
-
-        // Navigation
-        document.querySelectorAll('.profile-nav a').forEach(link => {
+        navLinks.forEach(link => {
             link.addEventListener('click', (e) => {
-                document.querySelectorAll('.profile-nav a').forEach(a => a.classList.remove('active'));
-                e.target.classList.add('active');
-            });
-        });
+                e.preventDefault();
+                
+                // Remove active class from all links
+                navLinks.forEach(nav => nav.classList.remove('active'));
+                link.classList.add('active');
 
-        // Items filters
-        document.querySelectorAll('.items-filters button').forEach(button => {
-            button.addEventListener('click', (e) => {
-                document.querySelectorAll('.items-filters button').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                this.filterItems(e.target.textContent.split(' ')[0].toLowerCase());
+                // Hide all sections
+                Object.values(sections).forEach(section => {
+                    if (section) section.style.display = 'none';
+                });
+
+                // Show selected section
+                const sectionToShow = sections[link.dataset.section];
+                if (sectionToShow) sectionToShow.style.display = 'block';
             });
         });
+    }
+
+    toggleEditProfile() {
+        const modal = document.getElementById('edit-profile-modal');
+        if (!modal) return;
+
+        if (!modal.classList.contains('active')) {
+            // Load current user data into form
+            document.getElementById('edit-name').value = this.currentUser.name || '';
+            document.getElementById('edit-email').value = this.currentUser.email || '';
+            document.getElementById('edit-phone').value = this.currentUser.phone || '';
+            document.getElementById('edit-bio').value = this.currentUser.bio || '';
+            document.getElementById('edit-location').value = this.currentUser.location || '';
+        }
+        modal.classList.toggle('active');
     }
 
     postNewItem() {
@@ -147,7 +206,7 @@ class AlugiProfile {
             category: document.getElementById('item-category').value,
             dailyRate: parseFloat(document.getElementById('daily-rate').value),
             images: [],
-            status: 'available'
+            status: 'disponivel'
         };
 
         // Get images
@@ -159,6 +218,9 @@ class AlugiProfile {
 
         if (this.auth.postItem(itemData)) {
             this.loadUserItems();
+            this.calculateProfileCompletion();
+            
+            // Close modal and reset form
             hidePostItemModal();
             document.getElementById('post-item-form').reset();
             document.getElementById('image-preview').innerHTML = '';
@@ -168,13 +230,21 @@ class AlugiProfile {
     loadUserItems() {
         const items = this.auth.getUserItems();
         const grid = document.getElementById('items-grid');
+        
+        if (!grid) return;
+        
         grid.innerHTML = '';
+
+        if (items.length === 0) {
+            grid.innerHTML = '<p>Você ainda não possui itens cadastrados.</p>';
+            return;
+        }
 
         items.forEach(item => {
             const itemElement = document.createElement('div');
             itemElement.className = 'item-card';
             itemElement.innerHTML = `
-                <div class="item-image" style="background-image: url(${item.images?.[0] || 'default-item.jpg'})"></div>
+                <div class="item-image" style="background-image: url(${item.images?.[0] || 'assets/default-item.jpg'})"></div>
                 <div class="item-info">
                     <h3>${item.name}</h3>
                     <p>${item.description}</p>
@@ -197,18 +267,6 @@ class AlugiProfile {
         });
     }
 
-    filterItems(filter) {
-        const items = document.querySelectorAll('.item-card');
-        items.forEach(item => {
-            const status = item.querySelector('.item-status').textContent.toLowerCase();
-            if (filter === 'todos' || status === filter) {
-                item.style.display = 'block';
-            } else {
-                item.style.display = 'none';
-            }
-        });
-    }
-
     saveProfileChanges() {
         const formData = {
             name: document.getElementById('edit-name').value,
@@ -223,40 +281,20 @@ class AlugiProfile {
         localStorage.setItem('alugi_current_user', JSON.stringify(this.currentUser));
 
         // Update UI
-        document.getElementById('user-name').textContent = formData.name;
+        this.initProfile();
+        this.calculateProfileCompletion();
         
         // Close modal and show success message
-        toggleEditProfile();
+        this.toggleEditProfile();
         this.auth.showSuccess('Perfil atualizado com sucesso!');
     }
 }
 
-// Modal functions
-function toggleEditProfile() {
-    const modal = document.getElementById('edit-profile-modal');
-    if (!modal.classList.contains('active')) {
-        // Load current user data into form
-        const currentUser = JSON.parse(localStorage.getItem('alugi_current_user'));
-        document.getElementById('edit-name').value = currentUser.name || '';
-        document.getElementById('edit-email').value = currentUser.email || '';
-        document.getElementById('edit-phone').value = currentUser.phone || '';
-        document.getElementById('edit-bio').value = currentUser.bio || '';
-        document.getElementById('edit-location').value = currentUser.location || '';
-    }
-    modal.classList.toggle('active');
-}
-
-function showPostItemModal() {
-    document.getElementById('post-item-modal').classList.add('active');
-}
-
-function hidePostItemModal() {
-    document.getElementById('post-item-modal').classList.remove('active');
-}
-
+// Global functions for item actions
 function editItem(itemId) {
     // TODO: Implement item editing
     console.log('Edit item:', itemId);
+    alert('Edição de item será implementada em breve!');
 }
 
 function deleteItem(itemId) {
@@ -265,7 +303,11 @@ function deleteItem(itemId) {
         const items = JSON.parse(localStorage.getItem('alugi_items')) || [];
         const updatedItems = items.filter(item => item.id !== itemId);
         localStorage.setItem('alugi_items', JSON.stringify(updatedItems));
+        
+        // Reload items and recalculate profile completion
         window.AlugiProfile.loadUserItems();
+        window.AlugiProfile.calculateProfileCompletion();
+        
         auth.showSuccess('Item excluído com sucesso!');
     }
 }
