@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             itemCard.className = 'item-card';
             itemCard.dataset.status = item.status;
             itemCard.innerHTML = `
-                <div class="item-image" style="background-image: url(${item.images?.[0] || 'default-item.jpg'})"></div>
+                <div class="item-image" style="background-image: url(${item.images?.[0] || 'assets/default-item.jpg'})"></div>
                 <div class="item-info">
                     <h3>${item.name}</h3>
                     <p>${item.description}</p>
@@ -87,10 +87,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Event listeners for search
-    searchButton.addEventListener('click', performSearch);
-    searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') performSearch();
-    });
+    if (searchButton) {
+        searchButton.addEventListener('click', performSearch);
+    }
+    if (searchInput) {
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') performSearch();
+        });
+    }
 
     // Item details view (placeholder)
     window.viewItemDetails = (itemId) => {
