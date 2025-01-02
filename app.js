@@ -38,6 +38,7 @@ class AlugiApp {
         this.setupSearchFunctionality();
         this.setupMobileMenu();
         this.setupAuthButtons();
+        this.setupContactNavigation();
     }
 
     // Initialize dynamic content
@@ -154,14 +155,60 @@ class AlugiApp {
         // TODO: Implement category filtering logic
     }
 
-    // Authentication button handlers
+    // Setup authentication buttons
     setupAuthButtons() {
-        const loginButton = document.querySelector('.login');
-        const signupButton = document.querySelector('.signup');
+        const loginBtn = document.querySelector('.login');
+        const signupBtn = document.querySelector('.signup');
+        
+        if (loginBtn) {
+            loginBtn.addEventListener('click', () => {
+                window.location.href = 'auth.html?mode=login';
+            });
+        }
+        
+        if (signupBtn) {
+            signupBtn.addEventListener('click', () => {
+                window.location.href = 'auth.html?mode=signup';
+            });
+        }
+    }
 
-        if (loginButton && signupButton) {
-            loginButton.addEventListener('click', this.showLoginModal.bind(this));
-            signupButton.addEventListener('click', this.showSignupModal.bind(this));
+    // Setup contact navigation
+    setupContactNavigation() {
+        const contactLink = document.querySelector('a[href="#contact"]');
+        if (contactLink) {
+            contactLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                const contactSection = document.getElementById('contact');
+                if (contactSection) {
+                    contactSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        }
+
+        // Handle contact form submission
+        const contactForm = document.getElementById('contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const formData = {
+                    name: contactForm.querySelector('#name').value,
+                    email: contactForm.querySelector('#email').value,
+                    message: contactForm.querySelector('#message').value
+                };
+
+                // Store the message in localStorage for now
+                const messages = JSON.parse(localStorage.getItem('alugi_messages') || '[]');
+                messages.push({
+                    ...formData,
+                    timestamp: new Date().toISOString()
+                });
+                localStorage.setItem('alugi_messages', JSON.stringify(messages));
+
+                // Show success message
+                alert('Mensagem enviada com sucesso! Entraremos em contato em breve.');
+                contactForm.reset();
+            });
         }
     }
 
