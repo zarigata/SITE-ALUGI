@@ -274,15 +274,15 @@ class AlugiApp {
             return [];
         }
 
-        // Check if AlugiData exists
-        if (!window.AlugiData || typeof window.AlugiData.searchItems !== 'function') {
+        // Check if ALUGI_DATA exists and has searchItems method
+        if (!ALUGI_DATA || typeof ALUGI_DATA.searchItems !== 'function') {
             console.error('Search functionality is not available');
             return [];
         }
 
-        // Perform search using AlugiData's search method
+        // Perform search using ALUGI_DATA's search method
         try {
-            const results = window.AlugiData.searchItems(query);
+            const results = ALUGI_DATA.searchItems(query);
             return results || [];
         } catch (error) {
             console.error('Error performing search:', error);
@@ -358,13 +358,13 @@ class AlugiApp {
             
             if (query) {
                 // Validate search method exists
-                if (!window.AlugiData || typeof window.AlugiData.searchItems !== 'function') {
+                if (!ALUGI_DATA || typeof ALUGI_DATA.searchItems !== 'function') {
                     console.error('Search functionality is not available');
                     return;
                 }
 
                 // Perform search
-                const results = window.AlugiData.searchItems(query);
+                const results = ALUGI_DATA.searchItems(query);
                 
                 // Store search data
                 localStorage.setItem('alugi_last_search_query', query);
