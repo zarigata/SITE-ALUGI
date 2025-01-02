@@ -336,10 +336,14 @@ class AlugiApp {
         }
 
         // Add event listeners for search
-        mainSearchButton.addEventListener('click', performSearch);
-        mainSearchInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') performSearch();
-        });
+        if (mainSearchButton) {
+            mainSearchButton.addEventListener('click', performSearch);
+        }
+        if (mainSearchInput) {
+            mainSearchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') performSearch();
+            });
+        }
     }
 
     // Static utility methods

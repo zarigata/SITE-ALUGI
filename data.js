@@ -50,7 +50,7 @@ const ALUGI_DATA = {
             category: 'cameras',
             dailyRate: 89.90,
             description: 'Câmera Canon profissional para fotógrafos',
-            image: 'camera.jpg'
+            image: 'assets/camera.jpg'
         },
         {
             id: 'power-drill',
@@ -58,7 +58,7 @@ const ALUGI_DATA = {
             category: 'tools',
             dailyRate: 49.90,
             description: 'Furadeira potente para projetos profissionais',
-            image: 'drill.jpg'
+            image: 'assets/drill.jpg'
         },
         {
             id: 'sound-system',
@@ -66,7 +66,7 @@ const ALUGI_DATA = {
             category: 'party-equipment',
             dailyRate: 199.90,
             description: 'Sistema de som para festas e eventos',
-            image: 'sound-system.jpg'
+            image: 'assets/sound-system.jpg'
         }
     ],
     testimonials: [
