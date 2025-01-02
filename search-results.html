@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados da Busca - Alugi</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="Alugi Logo">
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Início</a>
+                <a href="items.html">Itens</a>
+                <a href="about.html">Sobre</a>
+                <a href="contact.html">Contato</a>
+            </div>
+            <div class="nav-actions">
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Buscar itens...">
+                    <button id="search-button"><i class="fas fa-search"></i></button>
+                </div>
+                <a href="auth.html" class="login-btn">Entrar</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Search Results Section -->
+    <section class="search-results-page">
+        <div class="container">
+            <h1>Resultados da Busca</h1>
+            <p id="search-query-text"></p>
+            
+            <div class="filters">
+                <button class="filter-btn active" data-filter="todos">Todos</button>
+                <button class="filter-btn" data-filter="disponivel">Disponíveis</button>
+                <button class="filter-btn" data-filter="alugado">Alugados</button>
+            </div>
+
+            <div id="search-results-grid" class="items-grid">
+                <!-- Search results will be dynamically populated here -->
+            </div>
+
+            <div id="no-results" class="no-results" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h2>Nenhum resultado encontrado</h2>
+                <p>Tente usar termos diferentes ou verificar a ortografia.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="logo.png" alt="Alugi Logo">
+                    <p>Conectando pessoas através do compartilhamento</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Links Rápidos</h4>
+                    <a href="index.html">Início</a>
+                    <a href="items.html">Itens</a>
+                    <a href="about.html">Sobre</a>
+                    <a href="contact.html">Contato</a>
+                </div>
+                <div class="footer-social">
+                    <h4>Siga-nos</h4>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Alugi. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="data.js"></script>
+    <script src="search-results.js"></script>
+</body>
+</html>

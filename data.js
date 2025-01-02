@@ -111,5 +111,35 @@ const ALUGI_DATA = {
             description: 'Use o item e devolva no prazo combinado',
             icon: 'fas fa-smile'
         }
-    ]
+    ],
+    // F3V3R DR34M SEARCH DOMINATION FUNCTION
+    searchItems(query) {
+        // Normalize query for case-insensitive and accent-insensitive search
+        const normalizedQuery = this.normalizeString(query.toLowerCase());
+        
+        // Get all items from localStorage
+        const allItems = JSON.parse(localStorage.getItem('alugi_items')) || [];
+        
+        // Perform search across multiple fields
+        const searchResults = allItems.filter(item => {
+            const nameMatch = this.normalizeString(item.name.toLowerCase()).includes(normalizedQuery);
+            const descriptionMatch = this.normalizeString(item.description.toLowerCase()).includes(normalizedQuery);
+            const categoryMatch = this.normalizeString(item.category.toLowerCase()).includes(normalizedQuery);
+            
+            return nameMatch || descriptionMatch || categoryMatch;
+        });
+        
+        // Store search results in localStorage for retrieval on search results page
+        localStorage.setItem('alugi_search_results', JSON.stringify(searchResults));
+        
+        return searchResults;
+    },
+    
+    // Utility function to normalize strings for better search
+    normalizeString(str) {
+        return str
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-zA-Z0-9 ]/g, '');
+    },
 };

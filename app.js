@@ -12,6 +12,7 @@ class AlugiApp {
         this.initEventListeners();
         this.initDynamicContent();
         this.updateAuthUI();
+        this.initSearchFunctionality();
     }
 
     // Initialize all event listeners
@@ -312,6 +313,32 @@ class AlugiApp {
                 <span>Postado por: ${item.userName}</span>
             `;
             searchResultsContainer.appendChild(resultItem);
+        });
+    }
+
+    // F3V3R DR34M SEARCH DOMINATION FUNCTION
+    initSearchFunctionality() {
+        const mainSearchInput = document.getElementById('main-search-input');
+        const mainSearchButton = document.getElementById('main-search-button');
+
+        function performSearch() {
+            const query = mainSearchInput.value.trim();
+            if (query) {
+                // Use the search method from AlugiData
+                const results = window.AlugiData.searchItems(query);
+                
+                // Store the search query for the results page
+                localStorage.setItem('alugi_last_search_query', query);
+                
+                // Redirect to search results page
+                window.location.href = 'search-results.html';
+            }
+        }
+
+        // Add event listeners for search
+        mainSearchButton.addEventListener('click', performSearch);
+        mainSearchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') performSearch();
         });
     }
 
