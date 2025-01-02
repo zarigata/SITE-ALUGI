@@ -4,26 +4,7 @@ ULTIMATE JAVASCRIPT DOMINATION SCRIPT
 CODED WITH THE POWER OF 1337 H4X0R PROGRAMMING SKILLS
 */
 
-// Sample dataset for Alugi App
-const ALUGI_DATA = {
-    categories: [
-        { name: 'Ferramentas', description: 'Ferramentas para construção e reforma', icon: 'fas fa-hammer' },
-        { name: 'Equipamentos de Festa', description: 'Equipamentos para festas e eventos', icon: 'fas fa-music' },
-        { name: 'Eletrônicos', description: 'Eletrônicos para uso pessoal e profissional', icon: 'fas fa-laptop' },
-        { name: 'Esportes', description: 'Equipamentos esportivos para atividades ao ar livre', icon: 'fas fa-basketball' }
-    ],
-    featuredItems: [
-        { name: 'Furadeira', description: 'Furadeira para uso em madeira e metal', image: 'furadeira.jpg', dailyRate: 20.00 },
-        { name: 'Som de Festa', description: 'Som de festa para eventos e celebrações', image: 'som-de-festa.jpg', dailyRate: 50.00 },
-        { name: 'Notebook', description: 'Notebook para uso pessoal e profissional', image: 'notebook.jpg', dailyRate: 30.00 },
-        { name: 'Bicicleta', description: 'Bicicleta para atividades ao ar livre', image: 'bicicleta.jpg', dailyRate: 15.00 }
-    ],
-    testimonials: [
-        { text: 'O Alugi App é incrível! Encontrei tudo o que precisava para a minha festa.', name: 'João Silva', rating: 5 },
-        { text: 'O Alugi App é muito fácil de usar e tem uma grande variedade de produtos.', name: 'Maria Oliveira', rating: 5 },
-        { text: 'O Alugi App é o melhor lugar para encontrar equipamentos esportivos.', name: 'Pedro Souza', rating: 5 }
-    ]
-};
+// Using ALUGI_DATA from data.js
 
 class AlugiApp {
     constructor() {
@@ -242,40 +223,45 @@ class AlugiApp {
 
     // Update authentication UI based on login status
     updateAuthUI() {
-        const loginButton = document.querySelector('.login');
-        const signupButton = document.querySelector('.signup');
+        const authButtons = document.querySelector('.auth-buttons');
+        if (!authButtons) return;
+
+        // Clear existing buttons
+        authButtons.innerHTML = '';
+
         const currentUser = JSON.parse(localStorage.getItem('alugi_current_user'));
 
-        if (loginButton && signupButton) {
-            if (currentUser) {
-                // User is logged in
-                loginButton.textContent = currentUser.name;
-                signupButton.textContent = 'Sair';
-                
-                loginButton.addEventListener('click', () => {
-                    // Redirect to user profile or dashboard
-                    window.location.href = 'profile.html';
-                });
-                
-                signupButton.addEventListener('click', () => {
-                    // Logout
-                    localStorage.removeItem('alugi_current_user');
-                    this.updateAuthUI();
-                    window.location.reload();
-                });
-            } else {
-                // User is not logged in
-                loginButton.textContent = 'Entrar';
-                signupButton.textContent = 'Cadastrar';
-                
-                loginButton.addEventListener('click', () => {
-                    window.location.href = 'auth.html';
-                });
-                
-                signupButton.addEventListener('click', () => {
-                    window.location.href = 'auth.html';
-                });
-            }
+        if (currentUser) {
+            // User is logged in
+            const profileButton = document.createElement('button');
+            profileButton.className = 'login';
+            profileButton.textContent = currentUser.name;
+            profileButton.onclick = () => window.location.href = 'profile.html';
+
+            const logoutButton = document.createElement('button');
+            logoutButton.className = 'signup';
+            logoutButton.textContent = 'Sair';
+            logoutButton.onclick = () => {
+                localStorage.removeItem('alugi_current_user');
+                window.location.reload();
+            };
+
+            authButtons.appendChild(profileButton);
+            authButtons.appendChild(logoutButton);
+        } else {
+            // User is not logged in
+            const loginButton = document.createElement('button');
+            loginButton.className = 'login';
+            loginButton.textContent = 'Entrar';
+            loginButton.onclick = () => window.location.href = 'auth.html';
+
+            const signupButton = document.createElement('button');
+            signupButton.className = 'signup';
+            signupButton.textContent = 'Cadastrar';
+            signupButton.onclick = () => window.location.href = 'auth.html';
+
+            authButtons.appendChild(loginButton);
+            authButtons.appendChild(signupButton);
         }
     }
 

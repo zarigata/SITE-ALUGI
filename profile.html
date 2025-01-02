@@ -11,8 +11,9 @@
 <body>
     <!-- 
     F3V3R DR34M KEYGEN STYLE COMMENT: 
-    ULTIMATE USER PROFILE DOMINATION
+    ULTIMATE USER PROFILE DOMINATION V2.0
     CODED WITH THE POWER OF 1337 H4X0R SKILLS
+    MAXIMUM PROFILE CUSTOMIZATION ENABLED
     -->
     <div id="app">
         <header>
@@ -20,6 +21,7 @@
                 <div class="logo">Alugi</div>
                 <ul class="nav-links">
                     <li><a href="index.html">Início</a></li>
+                    <li><a href="#dashboard">Dashboard</a></li>
                     <li><a href="#my-items">Meus Itens</a></li>
                     <li><a href="#post-item">Postar Item</a></li>
                 </ul>
@@ -31,19 +33,176 @@
         </header>
 
         <main class="profile-page">
-            <section class="user-info">
+            <section class="profile-hero">
+                <div class="profile-cover" id="profile-cover">
+                    <button class="edit-cover" onclick="document.getElementById('cover-upload').click()">
+                        <i class="fas fa-camera"></i> Alterar Capa
+                    </button>
+                    <input type="file" id="cover-upload" hidden accept="image/*">
+                </div>
                 <div class="profile-header">
-                    <div class="profile-avatar">
-                        <i class="fas fa-user-circle"></i>
+                    <div class="profile-avatar" id="profile-avatar">
+                        <img src="default-avatar.png" alt="Profile Picture" id="avatar-img">
+                        <button class="edit-avatar" onclick="document.getElementById('avatar-upload').click()">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                        <input type="file" id="avatar-upload" hidden accept="image/*">
                     </div>
-                    <div class="profile-details" id="user-details">
-                        <!-- User details will be dynamically populated -->
+                    <div class="profile-info">
+                        <h1 id="user-name">Carregando...</h1>
+                        <p id="user-status">Membro desde <span id="join-date">...</span></p>
+                        <div class="profile-stats">
+                            <div class="stat">
+                                <span id="items-count">0</span>
+                                <label>Itens</label>
+                            </div>
+                            <div class="stat">
+                                <span id="rentals-count">0</span>
+                                <label>Aluguéis</label>
+                            </div>
+                            <div class="stat">
+                                <span id="rating">5.0</span>
+                                <label>Avaliação</label>
+                            </div>
+                        </div>
                     </div>
+                    <button class="edit-profile-btn" onclick="toggleEditProfile()">
+                        <i class="fas fa-edit"></i> Editar Perfil
+                    </button>
                 </div>
             </section>
 
-            <section id="post-item" class="post-item-section">
-                <h2>Postar Novo Item</h2>
+            <div class="profile-content">
+                <aside class="profile-sidebar">
+                    <nav class="profile-nav">
+                        <a href="#dashboard" class="active">
+                            <i class="fas fa-home"></i> Dashboard
+                        </a>
+                        <a href="#my-items">
+                            <i class="fas fa-box-open"></i> Meus Itens
+                        </a>
+                        <a href="#rentals">
+                            <i class="fas fa-handshake"></i> Aluguéis
+                        </a>
+                        <a href="#messages">
+                            <i class="fas fa-envelope"></i> Mensagens
+                            <span class="badge">2</span>
+                        </a>
+                        <a href="#settings">
+                            <i class="fas fa-cog"></i> Configurações
+                        </a>
+                    </nav>
+
+                    <div class="profile-completion">
+                        <h3>Perfil Completo</h3>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 75%"></div>
+                        </div>
+                        <p>75% completo</p>
+                        <ul class="completion-tasks">
+                            <li class="done"><i class="fas fa-check"></i> Informações básicas</li>
+                            <li class="done"><i class="fas fa-check"></i> Foto de perfil</li>
+                            <li><i class="fas fa-times"></i> Verificar email</li>
+                            <li><i class="fas fa-times"></i> Adicionar telefone</li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <div class="profile-main">
+                    <section id="dashboard" class="dashboard-section">
+                        <h2>Dashboard</h2>
+                        <div class="dashboard-grid">
+                            <div class="dashboard-card earnings">
+                                <h3>Ganhos do Mês</h3>
+                                <p class="amount">R$ 1.250,00</p>
+                                <span class="trend positive">
+                                    <i class="fas fa-arrow-up"></i> 15% em relação ao mês anterior
+                                </span>
+                            </div>
+                            <div class="dashboard-card active-rentals">
+                                <h3>Aluguéis Ativos</h3>
+                                <p class="amount">5</p>
+                                <a href="#rentals" class="view-all">Ver todos</a>
+                            </div>
+                            <div class="dashboard-card reviews">
+                                <h3>Últimas Avaliações</h3>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                    <span>4.5</span>
+                                </div>
+                                <p>12 avaliações este mês</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="my-items" class="my-items-section">
+                        <div class="section-header">
+                            <h2>Meus Itens</h2>
+                            <button class="add-item-btn" onclick="showPostItemModal()">
+                                <i class="fas fa-plus"></i> Novo Item
+                            </button>
+                        </div>
+                        <div class="items-filters">
+                            <button class="active">Todos (12)</button>
+                            <button>Disponíveis (8)</button>
+                            <button>Alugados (4)</button>
+                            <button>Pendentes (0)</button>
+                        </div>
+                        <div id="items-grid" class="items-grid">
+                            <!-- Items will be dynamically populated -->
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+        <!-- Edit Profile Modal -->
+        <div id="edit-profile-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Editar Perfil</h2>
+                    <button class="close-modal" onclick="toggleEditProfile()">&times;</button>
+                </div>
+                <form id="edit-profile-form">
+                    <div class="input-group">
+                        <label for="edit-name">Nome Completo</label>
+                        <input type="text" id="edit-name" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="edit-email">Email</label>
+                        <input type="email" id="edit-email" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="edit-phone">Telefone</label>
+                        <input type="tel" id="edit-phone" placeholder="(XX) XXXXX-XXXX">
+                    </div>
+                    <div class="input-group">
+                        <label for="edit-bio">Biografia</label>
+                        <textarea id="edit-bio" rows="4" placeholder="Conte um pouco sobre você..."></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label for="edit-location">Localização</label>
+                        <input type="text" id="edit-location" placeholder="Cidade, Estado">
+                    </div>
+                    <div class="form-buttons">
+                        <button type="button" class="cancel-btn" onclick="toggleEditProfile()">Cancelar</button>
+                        <button type="submit" class="save-btn">Salvar Alterações</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Post Item Modal -->
+        <div id="post-item-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Postar Novo Item</h2>
+                    <button class="close-modal" onclick="hidePostItemModal()">&times;</button>
+                </div>
                 <form id="post-item-form">
                     <div class="input-group">
                         <label for="item-name">Nome do Item</label>
@@ -67,17 +226,23 @@
                         <label for="daily-rate">Valor da Diária (R$)</label>
                         <input type="number" id="daily-rate" step="0.01" required>
                     </div>
-                    <button type="submit" class="auth-button">Postar Item</button>
+                    <div class="input-group">
+                        <label for="item-images">Fotos do Item</label>
+                        <div class="image-upload-area" onclick="document.getElementById('item-images').click()">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Clique ou arraste imagens aqui</p>
+                            <span>Máximo 5 imagens</span>
+                        </div>
+                        <input type="file" id="item-images" multiple accept="image/*" hidden>
+                        <div id="image-preview" class="image-preview"></div>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="button" class="cancel-btn" onclick="hidePostItemModal()">Cancelar</button>
+                        <button type="submit" class="save-btn">Publicar Item</button>
+                    </div>
                 </form>
-            </section>
-
-            <section id="my-items" class="my-items-section">
-                <h2>Meus Itens</h2>
-                <div id="items-grid" class="items-grid">
-                    <!-- User's items will be dynamically populated -->
-                </div>
-            </section>
-        </main>
+            </div>
+        </div>
 
         <footer>
             <div class="footer-content">
@@ -94,11 +259,12 @@
                 </div>
             </div>
             <div class="copyright">
-                © 2025 Alugi. Todos os direitos reservados.
+                &copy; 2025 Alugi. Todos os direitos reservados.
             </div>
         </footer>
     </div>
 
+    <script src="data.js"></script>
     <script src="auth.js"></script>
     <script src="profile.js"></script>
 </body>
