@@ -66,7 +66,7 @@
                             </div>
                         </div>
                     </div>
-                    <button class="edit-profile-btn" onclick="window.AlugiProfile.toggleEditProfile()">Editar Perfil</button>
+                    <button class="edit-profile-btn" onclick="toggleEditProfile()">Editar Perfil</button>
                 </div>
             </section>
 
@@ -193,9 +193,9 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h2>Editar Perfil</h2>
-                    <button class="close-modal" onclick="window.AlugiProfile.toggleEditProfile()">&times;</button>
+                    <button class="close-modal" onclick="toggleEditProfile()">&times;</button>
                 </div>
-                <form id="edit-profile-form">
+                <form id="edit-profile-form" onsubmit="saveProfileChanges(event)">
                     <div class="form-group">
                         <label for="edit-name">Nome</label>
                         <input type="text" id="edit-name" name="name" required>
@@ -217,8 +217,8 @@
                         <input type="text" id="edit-location" name="location">
                     </div>
                     <div class="form-buttons">
-                        <button type="button" class="cancel-btn" onclick="window.AlugiProfile.toggleEditProfile()">Cancelar</button>
-                        <button type="submit" class="save-btn" onclick="window.AlugiProfile.saveProfileChanges(); return false;">Salvar</button>
+                        <button type="button" class="cancel-btn" onclick="toggleEditProfile()">Cancelar</button>
+                        <button type="submit" class="save-btn">Salvar</button>
                     </div>
                 </form>
             </div>

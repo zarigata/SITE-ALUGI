@@ -312,6 +312,61 @@ function deleteItem(itemId) {
     }
 }
 
+// Global function to toggle edit profile modal
+function toggleEditProfile() {
+    const modal = document.getElementById('edit-profile-modal');
+    if (!modal) return;
+
+    if (!modal.classList.contains('active')) {
+        // Load current user data into form
+        const currentUser = JSON.parse(localStorage.getItem('alugi_current_user') || '{}');
+        document.getElementById('edit-name').value = currentUser.name || '';
+        document.getElementById('edit-email').value = currentUser.email || '';
+        document.getElementById('edit-phone').value = currentUser.phone || '';
+        document.getElementById('edit-bio').value = currentUser.bio || '';
+        document.getElementById('edit-location').value = currentUser.location || '';
+    }
+    modal.classList.toggle('active');
+}
+
+// Global function to save profile changes
+function saveProfileChanges(event) {
+    if (event) event.preventDefault();
+    
+    const formData = {
+        name: document.getElementById('edit-name').value,
+        email: document.getElementById('edit-email').value,
+        phone: document.getElementById('edit-phone').value,
+        bio: document.getElementById('edit-bio').value,
+        location: document.getElementById('edit-location').value
+    };
+
+    // Get current user
+    const currentUser = JSON.parse(localStorage.getItem('alugi_current_user') || '{}');
+    
+    // Update user data
+    const updatedUser = { ...currentUser, ...formData };
+    localStorage.setItem('alugi_current_user', JSON.stringify(updatedUser));
+
+    // Update UI elements
+    document.getElementById('user-name').textContent = formData.name;
+
+    // Close modal
+    toggleEditProfile();
+
+    // Show success message (assuming AlugiAuth exists)
+    if (window.AlugiAuth && window.AlugiAuth.showSuccess) {
+        window.AlugiAuth.showSuccess('Perfil atualizado com sucesso!');
+    } else {
+        alert('Perfil atualizado com sucesso!');
+    }
+
+    // Recalculate profile completion
+    if (window.AlugiProfile) {
+        window.AlugiProfile.calculateProfileCompletion();
+    }
+}
+
 // Initialize profile when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.AlugiProfile = new AlugiProfile();
