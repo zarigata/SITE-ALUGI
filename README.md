@@ -16,18 +16,34 @@ Visit the live site: [Alugi on GitHub Pages](https://your-username.github.io/alu
 - 💻 Responsive design
 - 🔒 Secure local storage authentication
 
-## 🚀 Deployment
+## 🚀 Deployment Guide
 
-### GitHub Pages Deployment
-1. Fork this repository
-2. Go to repository settings
-3. Navigate to "Pages" section
-4. Select "main" branch for deployment
-5. Wait for GitHub Actions to deploy
+### Prerequisites
+- GitHub Account
+- Git installed
+- Web browser
+
+### Deployment Steps
+1. Fork the Repository
+   - Click "Fork" button on GitHub
+   - Choose your account
+
+2. Enable GitHub Pages
+   - Go to repository Settings
+   - Navigate to "Pages" section
+   - Source: Deploy from a branch
+   - Branch: Select "main"
+   - Folder: Select "/ (root)"
+   - Save
+
+3. Verify Deployment
+   - Go to "Actions" tab
+   - Wait for workflow to complete
+   - Site will be live at `https://your-username.github.io/alugi`
 
 ### Local Development
 ```bash
-# Clone the repository
+# Clone your forked repository
 git clone https://github.com/your-username/alugi.git
 
 # Navigate to project directory
