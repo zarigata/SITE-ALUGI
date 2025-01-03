@@ -29,6 +29,9 @@
                     <button class="login">Perfil</button>
                     <button class="signup">Sair</button>
                 </div>
+                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
             </nav>
         </header>
 
@@ -72,7 +75,7 @@
 
             <div class="profile-content container">
                 <!-- Sidebar Navigation -->
-                <div class="profile-sidebar">
+                <div class="profile-sidebar" id="profile-sidebar">
                     <nav class="profile-nav">
                         <a href="#" class="active" data-section="dashboard">
                             <i class="fas fa-home"></i> Dashboard
@@ -328,6 +331,46 @@
                 showCoverUploadModal();
             }
         });
+    </script>
+
+    <script>
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('profile-sidebar');
+            const mobileToggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (sidebar.style.display === 'block') {
+                sidebar.style.display = 'none';
+                mobileToggle.classList.remove('active');
+            } else {
+                sidebar.style.display = 'block';
+                mobileToggle.classList.add('active');
+            }
+        }
+
+        // Initialize mobile menu state on page load
+        function initMobileMenu() {
+            const sidebar = document.getElementById('profile-sidebar');
+            const mobileToggle = document.querySelector('.mobile-menu-toggle');
+            
+            // Hide sidebar by default on mobile
+            if (window.innerWidth <= 768) {
+                sidebar.style.display = 'none';
+            } else {
+                sidebar.style.display = 'block';
+            }
+
+            // Adjust on window resize
+            window.addEventListener('resize', () => {
+                if (window.innerWidth <= 768) {
+                    sidebar.style.display = 'none';
+                } else {
+                    sidebar.style.display = 'block';
+                }
+            });
+        }
+
+        // Call initialization on page load
+        document.addEventListener('DOMContentLoaded', initMobileMenu);
     </script>
 
     <script src="data.js"></script>

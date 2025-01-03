@@ -1407,8 +1407,27 @@ footer {
 }
 
 .profile-sidebar {
-    width: 280px;
-    flex-shrink: 0;
+    width: 250px;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+    .profile-content {
+        flex-direction: column;
+    }
+
+    .profile-sidebar {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}
+
+@media (min-width: 769px) {
+    .profile-sidebar {
+        display: block !important;
+    }
 }
 
 .profile-nav {
