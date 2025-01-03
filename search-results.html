@@ -33,23 +33,56 @@
     <!-- Search Results Section -->
     <section class="search-results-page">
         <div class="container">
-            <h1>Resultados da Busca</h1>
-            <p id="search-query-text"></p>
+            <div class="search-header">
+                <h1>Resultados da Busca</h1>
+                <div class="search-summary">
+                    <p id="search-query-text" class="search-query"></p>
+                    <p id="results-count" class="results-count"></p>
+                </div>
+            </div>
             
-            <div class="filters">
-                <button class="filter-btn active" data-filter="todos">Todos</button>
-                <button class="filter-btn" data-filter="disponivel">Disponíveis</button>
-                <button class="filter-btn" data-filter="alugado">Alugados</button>
+            <div class="search-controls">
+                <div class="filters">
+                    <button class="filter-btn active" data-filter="todos">
+                        <i class="fas fa-layer-group"></i> Todos
+                    </button>
+                    <button class="filter-btn" data-filter="disponivel">
+                        <i class="fas fa-check-circle"></i> Disponíveis
+                    </button>
+                    <button class="filter-btn" data-filter="alugado">
+                        <i class="fas fa-lock"></i> Alugados
+                    </button>
+                </div>
+                <div class="sort-options">
+                    <select id="sort-select">
+                        <option value="relevancia">Relevância</option>
+                        <option value="preco-asc">Preço: Menor para Maior</option>
+                        <option value="preco-desc">Preço: Maior para Menor</option>
+                    </select>
+                </div>
             </div>
 
-            <div id="search-results-grid" class="items-grid">
-                <!-- Search results will be dynamically populated here -->
-            </div>
+            <div id="search-results-grid" class="items-grid"></div>
 
             <div id="no-results" class="no-results" style="display: none;">
-                <i class="fas fa-search"></i>
-                <h2>Nenhum resultado encontrado</h2>
-                <p>Tente usar termos diferentes ou verificar a ortografia.</p>
+                <div class="no-results-content">
+                    <i class="fas fa-search-minus"></i>
+                    <h2>Nenhum resultado encontrado</h2>
+                    <p>Tente usar termos diferentes ou verificar a ortografia.</p>
+                    <button id="reset-search" class="reset-search-btn">
+                        <i class="fas fa-redo"></i> Reiniciar Busca
+                    </button>
+                </div>
+            </div>
+
+            <div class="pagination">
+                <button id="prev-page" class="page-btn">
+                    <i class="fas fa-chevron-left"></i> Anterior
+                </button>
+                <span id="current-page">Página 1 de 1</span>
+                <button id="next-page" class="page-btn">
+                    Próximo <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
         </div>
     </section>
